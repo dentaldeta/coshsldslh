@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>はぐきとむしばのおはなし | カリエスリスクチェック（スマホ版）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F7F9FC; --surface:#FFFFFF; --surface2:#F0F4FA; --border:#E2E8F4;
+  --text:#2D3A4A; --text-muted:#7A8FA6;
+  --green:#34C472; --yellow:#F5A623; --red:#E85555;
+  --orange:#FF8C42; --teal:#3BBFB8; --blue:#4A90D9; --purple:#9B7FD4;
+  --pink:#FF6B9D; --mint:#E6F7F6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-weight:400;}
+
+/* ── HEADER ── */
+header{
+  padding:18px 28px 16px;
+  background:linear-gradient(135deg,#E8F6F5 0%,#EEF4FB 100%);
+  border-bottom:2px solid var(--border);
+  display:flex;align-items:center;gap:16px;
+}
+.logo-mark{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,var(--teal),var(--blue));
+  border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(59,191,184,.3);
+}
+.logo-text{font-family:'Nunito',sans-serif;font-size:1.25rem;font-weight:800;color:var(--teal);letter-spacing:.02em;}
+.logo-sub{font-size:.72rem;color:var(--text-muted);margin-top:2px;}
+
+.container{max-width:100%;margin:0 auto;padding:0 10px 80px;}
+
+/* ── STEPS ── */
+.steps{display:flex;align-items:center;margin:24px 0 28px;}
+.step{display:flex;align-items:center;gap:7px;font-size:.74rem;color:var(--text-muted);white-space:nowrap;font-weight:500;}
+.step.active{color:var(--teal);}
+.step.done{color:var(--green);}
+.step-num{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;}
+.step.active .step-num{border-color:var(--teal);background:var(--mint);color:var(--teal);}
+.step.done .step-num{border-color:var(--green);background:#E8F9EE;color:var(--green);}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 8px;border-radius:2px;}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:26px;margin-bottom:18px;box-shadow:0 2px 12px rgba(74,144,217,.06);}
+.card-title{font-size:.68rem;letter-spacing:.16em;color:var(--teal);text-transform:uppercase;margin-bottom:4px;font-family:'Nunito',sans-serif;font-weight:700;}
+.card-heading{font-size:1.05rem;font-weight:700;margin-bottom:18px;line-height:1.55;color:var(--text);}
+
+/* ── RULE BOX ── */
+.rule-box{background:linear-gradient(135deg,#F0FAF9,#F0F5FB);border-radius:14px;padding:18px;margin-bottom:18px;border-left:4px solid var(--teal);}
+.rule-box p{font-size:.82rem;color:var(--text);line-height:2;margin-bottom:4px;}
+.rule-box p:last-child{margin-bottom:0;}
+.rule-box strong{color:var(--teal);}
+.rule-box .highlight{color:var(--orange);font-weight:600;}
+
+/* ── SLEEP ── */
+.section-label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;font-family:'Nunito',sans-serif;font-weight:800;color:var(--text-muted);}
+.time-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px;}
+.time-grid label{font-size:.78rem;color:var(--text-muted);display:flex;flex-direction:column;gap:6px;font-weight:500;}
+.time-grid input{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:.88rem;padding:8px 12px;outline:none;transition:border-color .2s;width:100%;}
+.time-grid input:focus{border-color:var(--blue);}
+
+/* ── MEALS ── */
+.meal-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.meal-row{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:14px;animation:slideIn .22s ease;transition:box-shadow .2s;}
+.meal-row:hover{box-shadow:0 3px 12px rgba(74,144,217,.1);}
+.meal-row.safe-type{border-left:4px solid var(--purple);background:linear-gradient(135deg,#F5F0FC,#F7F9FC);}
+.meal-row input,.meal-row select{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:16px;padding:10px 12px;outline:none;transition:border-color .2s;width:100%;}
+.meal-row input:focus,.meal-row select:focus{border-color:var(--teal);}
+.sp-label{font-size:.7rem;color:var(--text-muted);font-weight:700;letter-spacing:.04em;}
+
+.meal-grid{display:flex;flex-direction:column;gap:8px;}
+.col-labels{display:none;}
+/* スマホ用ラベル付きフィールド */
+.sp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.sp-field{display:flex;flex-direction:column;gap:4px;}
+.sp-field.full{grid-column:1/3;}
+.sp-label{font-size:.65rem;color:var(--text-muted);font-weight:700;letter-spacing:.04em;}
+
+/* Time selector pair */
+.time-sel-wrap{display:flex;gap:3px;align-items:center;}
+.time-sel-wrap select{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:.8rem;padding:6px 2px 6px 7px;outline:none;transition:border-color .2s;flex:1;min-width:0;}
+.time-sel-wrap select:focus{border-color:var(--teal);}
+.time-sel-sep{color:var(--text-muted);font-size:.9rem;flex-shrink:0;font-weight:700;}
+.col-label{font-size:.62rem;color:var(--text-muted);letter-spacing:.04em;text-align:center;font-weight:600;}
+
+.meal-row input,.meal-row select{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:.82rem;padding:6px 8px;outline:none;transition:border-color .2s;width:100%;}
+.meal-row input:focus,.meal-row select:focus{border-color:var(--teal);}
+.meal-row input[type=number]::-webkit-inner-spin-button{opacity:.5;}
+
+.dem-badge{font-size:.74rem;text-align:center;padding:5px 4px;border-radius:8px;background:#FFF3EE;color:var(--orange);border:1.5px solid #FFD4B8;line-height:1.3;font-weight:700;}
+.dem-badge.safe-badge{background:#F3EEFF;color:var(--purple);border-color:#D8C8FF;}
+
+.del-btn{background:none;border:none;color:#C0CDD8;cursor:pointer;font-size:.95rem;padding:3px;transition:color .2s;border-radius:6px;}
+.del-btn:hover{color:var(--red);background:#FFF0F0;}
+
+.add-btn{display:flex;align-items:center;gap:9px;background:none;border:2px dashed var(--border);color:var(--text-muted);border-radius:12px;padding:10px 18px;font-size:.82rem;cursor:pointer;width:100%;transition:all .2s;font-family:'Noto Sans JP',sans-serif;font-weight:500;}
+.add-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--mint);}
+
+/* ── BRUSH ── */
+.brush-section{margin-top:22px;}
+.brush-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.brush-row{display:grid;grid-template-columns:120px 1fr 28px;gap:8px;align-items:center;background:#FFF8F2;border:1.5px solid #FFD4B8;border-radius:12px;padding:9px 13px;animation:slideIn .2s ease;}
+.brush-row input{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:.82rem;padding:5px 8px;outline:none;width:100%;}
+.brush-row input:focus{border-color:var(--orange);}
+
+/* ── CHIPS ── */
+.food-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.food-chip{padding:5px 12px;border-radius:100px;font-size:.72rem;cursor:pointer;border:1.5px solid var(--border);color:var(--text-muted);transition:all .15s;background:var(--surface);font-weight:500;}
+.food-chip:hover{border-color:var(--teal);color:var(--teal);background:var(--mint);}
+.food-chip.safe{border-color:#D8C8FF;color:var(--purple);background:#F5F0FF;}
+.food-chip.safe:hover{border-color:var(--purple);background:#EDE5FF;}
+
+.analyze-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--teal),var(--blue));border:none;border-radius:14px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .2s,transform .1s,box-shadow .2s;font-family:'Noto Sans JP',sans-serif;margin-top:10px;box-shadow:0 4px 18px rgba(59,191,184,.35);}
+.analyze-btn:hover{opacity:.93;transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,191,184,.4);}
+.analyze-btn:active{transform:translateY(0);}
+
+/* ── CHART ── */
+#chartSection{display:none;}
+.chart-wrap{position:relative;width:100%;height:320px;margin-bottom:8px;}
+@media(max-width:600px){.chart-wrap{height:220px;}}
+canvas{width:100%!important;touch-action:pan-y;}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:.74rem;color:var(--text-muted);}
+.legend-item{display:flex;align-items:center;gap:5px;font-weight:500;}
+.legend-dot{width:10px;height:10px;border-radius:3px;}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0;}
+.stat-box{background:linear-gradient(135deg,#F7FBFF,#F0F8F7);border-radius:14px;padding:16px 10px;text-align:center;border:1.5px solid var(--border);transition:box-shadow .2s;}
+.stat-box:hover{box-shadow:0 4px 14px rgba(59,191,184,.12);}
+.stat-label{font-size:.62rem;color:var(--text-muted);letter-spacing:.04em;margin-bottom:6px;font-weight:600;line-height:1.5;}
+.stat-val{font-family:'Nunito',sans-serif;font-size:2rem;line-height:1;font-weight:800;}
+.stat-unit{font-size:.64rem;color:var(--text-muted);margin-top:3px;font-weight:500;}
+
+/* ── BALANCE ── */
+.balance-section{background:linear-gradient(135deg,#F7FBFF,#F0FAF9);border-radius:16px;padding:20px;margin:14px 0;border:1.5px solid var(--border);}
+.balance-title{font-size:.7rem;letter-spacing:.1em;color:var(--text-muted);font-weight:700;margin-bottom:16px;text-transform:uppercase;}
+.balance-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.balance-lbl{font-size:.75rem;color:var(--text-muted);width:100px;flex-shrink:0;font-weight:600;}
+.balance-track{flex:1;height:14px;background:var(--border);border-radius:100px;overflow:hidden;}
+.balance-fill{height:100%;border-radius:100px;transition:width 1.1s cubic-bezier(.34,1.56,.64,1);}
+.balance-num{font-size:.74rem;width:54px;text-align:right;flex-shrink:0;font-weight:700;}
+.balance-verdict{margin-top:14px;padding:13px 17px;border-radius:11px;font-size:.84rem;line-height:1.7;font-weight:500;}
+.verdict-ok{background:#E8F9EE;border:1.5px solid #A8E6BE;color:#1E7A42;}
+.verdict-ng{background:#FEF0F0;border:1.5px solid #F8BEBE;color:#C0392B;}
+
+/* ── GAUGE ── */
+.gauge-wrap{margin:20px 0;}
+.gauge-labels{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-muted);margin-bottom:6px;font-weight:600;}
+.gauge-track{height:12px;border-radius:100px;background:linear-gradient(to right,var(--green) 0%,var(--yellow) 50%,var(--red) 100%);position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.08);}
+.gauge-needle{position:absolute;top:-5px;width:22px;height:22px;background:#fff;border-radius:50%;transform:translateX(-50%);border:3px solid var(--text);transition:left 1.3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.risk-badge{display:inline-flex;align-items:center;gap:7px;padding:8px 20px;border-radius:100px;font-weight:700;font-size:.95rem;margin-top:10px;}
+.risk-low{background:#E8F9EE;color:#1E7A42;border:1.5px solid #A8E6BE;}
+.risk-mid{background:#FEF8E7;color:#9A6800;border:1.5px solid #F5D88A;}
+.risk-high{background:#FEF0F0;color:#C0392B;border:1.5px solid #F8BEBE;}
+
+.alert-box{border-radius:12px;padding:14px 17px;margin-top:10px;font-size:.82rem;line-height:1.75;font-weight:500;}
+.alert-orange{background:#FFF8F2;border:1.5px solid #FFD4B8;color:#C0602A;}
+.alert-red{background:#FEF0F0;border:1.5px solid #F8BEBE;color:#C0392B;}
+.alert-blue{background:#EEF5FD;border:1.5px solid #B8D4F5;color:#2A6099;}
+
+/* ── TIMELINE ── */
+.timeline-wrap{margin-top:22px;}
+.tl-label{font-size:.7rem;color:var(--text-muted);letter-spacing:.06em;margin-bottom:8px;font-weight:600;}
+.tl-bar{height:32px;background:var(--surface2);border-radius:8px;position:relative;overflow:hidden;margin-bottom:5px;border:1px solid var(--border);}
+.tl-seg{position:absolute;top:0;bottom:0;border-radius:3px;}
+.tl-tick-labels{display:flex;justify-content:space-between;font-size:.64rem;color:var(--text-muted);font-weight:600;}
+.tl-sleep{position:absolute;top:0;bottom:0;background:rgba(74,144,217,.1);border-left:2px solid rgba(74,144,217,.3);border-right:2px solid rgba(74,144,217,.3);}
+
+/* ── DRY MOUTH ── */
+.drymouth-section{margin-bottom:22px;}
+.drycheck-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.drycheck-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:14px 10px;border-radius:14px;border:2px solid var(--border);
+  background:var(--surface2);cursor:pointer;transition:all .2s;
+  font-family:'Noto Sans JP',sans-serif;
+}
+.drycheck-btn .icon{font-size:1.8rem;}
+.drycheck-btn .label{font-size:.78rem;font-weight:700;color:var(--text-muted);}
+.drycheck-btn .sub{font-size:.62rem;color:var(--text-muted);text-align:center;line-height:1.5;}
+.drycheck-btn.selected-dry{
+  border-color:#E85555;background:linear-gradient(135deg,#FEF0F0,#FFF5F5);
+}
+.drycheck-btn.selected-dry .label{color:#C0392B;}
+.drycheck-btn.selected-normal{
+  border-color:var(--teal);background:linear-gradient(135deg,#E8F6F5,#F0F9F8);
+}
+.drycheck-btn.selected-normal .label{color:var(--teal);}
+.dry-warning{
+  margin-top:10px;padding:11px 14px;border-radius:10px;
+  background:#FEF0F0;border:1.5px solid #F8BEBE;
+  font-size:.78rem;color:#C0392B;line-height:1.7;display:none;
+}
+
+.print-btn{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:10px;padding:8px 16px;font-size:.8rem;font-weight:600;
+  color:var(--text-muted);cursor:pointer;margin-left:auto;
+  transition:all .2s;font-family:'Noto Sans JP',sans-serif;
+}
+.print-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--mint);}
+
+@media print {
+  /* 印刷時に非表示にする要素 */
+  header, .steps, .card:not(#chartSection),
+  .add-btn, .analyze-btn, .del-btn,
+  .food-chips, .brush-section, .col-labels,
+  .print-btn, #brushNoneNotice,
+  .mascot { display:none !important; }
+
+  /* ページ設定 */
+  @page { margin: 12mm 10mm; size: A4; }
+  body { background:#fff !important; font-size:11pt; }
+  .container { max-width:100%; padding:0; }
+
+  #chartSection {
+    display:block !important;
+    border:none !important;
+    box-shadow:none !important;
+    padding:0 !important;
+    margin:0 !important;
+  }
+
+  /* グラフを大きく */
+  .chart-wrap { height:260px !important; }
+
+  /* 統計グリッドを横並び */
+  .stats-grid { grid-template-columns:repeat(4,1fr) !important; }
+
+  /* ゲージ針を印刷対応（CSSアニメなし） */
+  .gauge-needle { transition:none !important; }
+
+  /* ページ分割を防ぐ */
+  .stats-grid, .balance-section, .gauge-wrap,
+  #riskBadge, #alertBoxes, .timeline-wrap {
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  /* 印刷ヘッダー */
+  #printHeader { display:block !important; }
+}
+
+/* 印刷ヘッダー（画面では非表示）*/
+#printHeader {
+  display:none;
+  margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:2px solid #3BBFB8;
+}
+
+
+@media(max-width:600px){
+  /* 基本レイアウト */
+  .container{padding:0 10px 80px;}
+  .card{padding:16px 12px;border-radius:16px;}
+  .card-heading{font-size:.95rem;}
+
+  /* ヘッダー */
+  header{padding:12px 14px 10px;gap:10px;}
+  .logo-mark{width:40px;height:40px;font-size:1.2rem;border-radius:14px;}
+  .logo-text{font-size:1.05rem;}
+  .logo-sub{font-size:.65rem;}
+  .mascot{font-size:1.6rem;}
+
+  /* ステップ */
+  .steps{margin:16px 0 20px;}
+  .step{font-size:.68rem;}
+  .step-num{width:22px;height:22px;font-size:.62rem;}
+
+  /* ルールボックス */
+  .rule-box p{font-size:.78rem;line-height:1.85;}
+
+  /* 睡眠時間入力 */
+  .time-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .time-grid label{font-size:.74rem;}
+
+
+  /* time-sel-wrap のセレクトを大きく */
+  .time-sel-wrap select{
+    padding:8px 4px 8px 8px;
+    font-size:.85rem;
+  }
+
+  /* 数値・テキスト入力 */
+  .meal-row input[type=number],
+  .meal-row input[type=text]{
+    padding:8px 10px;
+    font-size:.85rem;
+  }
+  .meal-row select{
+    padding:8px 6px;
+    font-size:.85rem;
+  }
+
+  /* ブラッシング行 */
+  .brush-row{
+    grid-template-columns:1fr 28px;
+    gap:8px;
+    padding:10px 12px;
+  }
+  .brush-row>:nth-child(2){display:none;} /* 説明テキスト非表示 */
+  .brush-row>:nth-child(3){grid-column:2;}
+
+  /* 追加ボタン */
+  .add-btn{padding:12px 16px;font-size:.84rem;}
+
+  /* チップ */
+  .food-chip{padding:7px 12px;font-size:.74rem;}
+
+  /* グラフ */
+  .chart-wrap{height:200px;}
+  .chart-legend{gap:8px;font-size:.68rem;}
+  .legend-dot{width:8px;height:8px;}
+
+  /* 統計 */
+  .stats-grid{grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+  .stat-box{padding:14px 8px;}
+  .stat-val{font-size:1.7rem;}
+  .stat-label{font-size:.6rem;}
+
+  /* バランス */
+  .balance-section{padding:14px 12px;}
+  .balance-lbl{width:72px;font-size:.68rem;}
+  .balance-num{font-size:.7rem;width:44px;}
+  .balance-verdict{font-size:.78rem;padding:10px 12px;}
+
+  /* ゲージ */
+  .gauge-wrap{margin:14px 0;}
+  .gauge-labels{font-size:.66rem;}
+  .gauge-needle{width:18px;height:18px;top:-3px;}
+
+  /* リスクバッジ */
+  .risk-badge{font-size:.84rem;padding:7px 16px;}
+
+  /* アラート */
+  .alert-box{font-size:.78rem;padding:11px 13px;}
+
+  /* タイムライン */
+  .tl-bar{height:26px;}
+  .tl-tick-labels{font-size:.6rem;}
+
+  /* 印刷ボタン非表示（スマホでは印刷しにくい） */
+  .print-btn{display:none;}
+}
+
+/* iOS: prevent zoom on focus — all inputs/selects must be 16px+ */
+input, select, textarea {
+  font-size:16px !important;
+  -webkit-appearance:none;
+  border-radius:9px;
+}
+/* restore select arrow on iOS */
+select {
+  -webkit-appearance:menulist;
+  background-color:var(--surface);
+}
+.time-sel-wrap select {
+  -webkit-appearance:menulist;
+  font-size:16px !important;
+  min-height:38px;
+}
+.meal-row input, .meal-row select {
+  min-height:38px;
+  font-size:16px !important;
+}
+/* Larger tap targets */
+.del-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+.food-chip{padding:8px 14px;min-height:36px;display:inline-flex;align-items:center;}
+.add-btn{min-height:44px;}
+.analyze-btn{min-height:52px;}
+/* Smooth scroll iOS */
+html{-webkit-overflow-scrolling:touch;}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">🦷</div>
+  <div>
+    <div class="logo-text">むしばリスクチェック</div>
+    <div class="logo-sub">ステファンカーブ × プラークpHシミュレーター</div>
+  </div>
+  <div style="margin-left:auto;" class="mascot">🦷</div>
+</header>
+
+<div class="container">
+
+  <div class="steps">
+    <div class="step active" id="step1"><div class="step-num">1</div><span>記録を入れる</span></div>
+    <div class="step-line"></div>
+    <div class="step" id="step2"><div class="step-num">2</div><span>グラフで確認</span></div>
+  </div>
+
+  <!-- RULES -->
+  <div class="card">
+    <div class="card-title">📖 シミュレーションのきまり</div>
+    <div class="card-heading">むしばができるしくみをグラフで見てみよう！</div>
+    <div class="rule-box">
+      <p>① <strong>むしばができる時間 = たべた時間 ＋ お口に残っている時間 ＋ 30分</strong><br>
+         例）キャラメル1粒：たべた2分 ＋ お口で残る60分 ＋ 30分 ＝ <strong style="color:var(--orange)">92分もとけています！</strong></p>
+      <p>② <strong>お口に残る時間</strong>：キャラメルは60分、アメは30分、クッキーは20分、のみものは5分など</p>
+      <p>③ <strong>歯ブラシ</strong>：ブラッシングすれば「お口に残る時間」はゼロになります。でも30分間はまだとけ続けます</p>
+      <p>④ <strong>唾液（つば）の力</strong>：pH 5.5以上になると、つばが歯をまもってくれます</p>
+      <p>⑤ <strong>ねている間はpHが変わらない</strong>：ねるときのpHがずっと続きます。低いままだとむしばが進みやすいです</p>
+      <p>⑥ <span class="highlight"><strong>ねる1時間前のおやつ</strong></span>：pHが回復できないままねてしまいます！</p>
+      <p>⑦ <strong style="color:var(--purple)">キシリトールなど</strong>：むしばのもとになる酸を出しません。安心して食べられます 🟣</p>
+    </div>
+    <div style="position:relative;width:100%;height:160px;"><canvas id="demoChart"></canvas></div>
+    <div class="chart-legend" style="margin-top:10px;">
+      <div class="legend-item"><div class="legend-dot" style="background:#39D0C8"></div>プラークpH</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#F85149"></div>臨界pH 5.5</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(248,81,73,.3)"></div>脱灰ゾーン</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(88,166,255,.25)"></div>睡眠（pH固定）</div>
+    </div>
+  </div>
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-title">✏️ きょうの記録を入れてね</div>
+    <div class="card-heading">ねる時間・たべたもの・歯みがきを入力しましょう</div>
+
+    <!-- SLEEP -->
+    <div style="margin-bottom:22px;">
+      <div class="section-label" style="color:var(--blue);">🌙 ねている時間</div>
+      <div class="time-grid">
+        <label>就寝時刻
+          <div class="time-sel-wrap">
+            <select id="sleepStartH"></select>
+            <span class="time-sel-sep">:</span>
+            <select id="sleepStartM"></select>
+          </div>
+        </label>
+        <label>起床時刻
+          <div class="time-sel-wrap">
+            <select id="sleepEndH"></select>
+            <span class="time-sel-sep">:</span>
+            <select id="sleepEndM"></select>
+          </div>
+        </label>
+      </div>
+      <div style="font-size:.74rem;color:var(--text-muted);margin-top:5px;">💡 ねている間はつばが少なくなります。pH が低いとむしばが進みやすいです。</div>
+    </div>
+
+    <!-- MEAL HEADERS -->
+    <div class="col-labels">
+      <div class="col-label">時刻</div>
+      <div class="col-label">たべた<br>時間(分)</div>
+      <div class="col-label">お口に<br>残る(分)</div>
+      <div class="col-label">たべたもの</div>
+      <div class="col-label">種類</div>
+      <div class="col-label">とける時間</div>
+      <div></div>
+    </div>
+
+    <div class="meal-list" id="mealList"></div>
+    <button class="add-btn" onclick="addMeal()">＋ たべたものを追加する</button>
+
+    <div style="margin-top:14px;">
+      <div style="font-size:.74rem;color:var(--text-muted);margin-bottom:8px;font-weight:600;">🍬 かんたん追加</div>
+      <div class="food-chips" id="foodChips"></div>
+    </div>
+
+    <!-- DRY MOUTH -->
+    <div class="drymouth-section">
+      <div class="section-label" style="color:#E85555;">💧 お口のかわき・口呼吸</div>
+      <div style="font-size:.74rem;color:var(--text-muted);margin-bottom:4px;font-weight:500;">
+        口が乾きやすい・口呼吸の方は唾液の緩衝能が低下し、pHの回復が遅くなります。
+      </div>
+      <div class="drycheck-grid">
+        <button class="drycheck-btn" id="btnNormal" onclick="setDryMouth(false)">
+          <span class="icon">😊</span>
+          <span class="label">ふつう</span>
+          <span class="sub">口が乾かない<br>鼻で呼吸できる</span>
+        </button>
+        <button class="drycheck-btn" id="btnDry" onclick="setDryMouth(true)">
+          <span class="icon">😮</span>
+          <span class="label">乾燥・口呼吸あり</span>
+          <span class="sub">口が乾く・口呼吸が多い<br>ドライマウスと言われた</span>
+        </button>
+      </div>
+      <div class="dry-warning" id="dryWarning">
+        ⚠️ <strong>口腔乾燥・口呼吸モード ON</strong>：唾液の緩衝能が低下しているため、
+        脱灰時間を <strong>1.5倍</strong> でシミュレーションします。
+        就寝中や食後の口腔乾燥は特にリスクが高まります。
+      </div>
+    </div>
+
+    <!-- BRUSH -->
+    <div class="brush-section">
+      <div class="section-label" style="color:var(--orange);">🪥 歯みがきの時間</div>
+      <div style="font-size:.74rem;color:var(--text-muted);margin-bottom:10px;font-weight:500;">歯みがきしてもその後<strong style="color:var(--orange)">30分間はまだとけ続けます</strong>。でもお口のよごれは取れます！</div>
+      <div class="brush-list" id="brushList"></div>
+      <button class="add-btn" style="border-color:#FFD4B8;color:var(--orange);" onclick="addBrush()">
+        ＋ 歯みがきした時間を追加する
+      </button>
+      <div id="brushNoneNotice" style="display:none;margin-top:10px;" class="alert-box alert-orange">
+        ⚠️ 歯みがきの記録がありません。ぜひ追加してみましょう！
+      </div>
+    </div>
+
+    <button class="analyze-btn" onclick="analyze()">🔍 グラフを見てみる！</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card" id="chartSection">
+    <!-- 印刷時のみ表示されるヘッダー -->
+    <div id="printHeader">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-size:1.4rem;">🦷</div>
+        <div>
+          <div style="font-size:1rem;font-weight:800;color:#3BBFB8;">むしばリスクチェック — ステファンカーブ解析レポート</div>
+          <div id="printDate" style="font-size:.75rem;color:#7A8FA6;margin-top:2px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;margin-bottom:4px;">
+      <div>
+        <div class="card-title">📊 きょうのpHグラフ</div>
+        <div class="card-heading" style="margin-bottom:0;">1日のお口の中のようす（ステファンカーブ）</div>
+      </div>
+      <button class="print-btn" onclick="printChart()">🖨️ 印刷する</button>
+    </div>
+
+    <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#39D0C8"></div>プラークpH</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#F85149"></div>臨界pH 5.5</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(248,81,73,.35)"></div>脱灰ゾーン</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(88,166,255,.2)"></div>睡眠帯（pH固定）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(255,166,87,.7)"></div>ブラッシング</div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="balance-section" id="balanceSection"></div>
+
+    <div class="gauge-wrap">
+      <div class="gauge-labels"><span>低リスク</span><span>中リスク</span><span>高リスク</span></div>
+      <div class="gauge-track"><div class="gauge-needle" id="gaugeNeedle" style="left:2%"></div></div>
+    </div>
+    <div id="riskBadge"></div>
+    <div id="alertBoxes"></div>
+
+    <div class="timeline-wrap">
+      <div class="tl-label">食事 / ブラッシング / 睡眠タイムライン（0〜24h）</div>
+      <div class="tl-bar" id="tlBar"></div>
+      <div class="tl-tick-labels"><span>0:00</span><span>6:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+    </div>
+  </div>
+</div><!-- /container -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ═══════════════════════════════════════════════
+// CONSTANTS & CONFIG
+// ═══════════════════════════════════════════════
+const BASE_PH   = 7.0;
+const CRITICAL  = 5.5;
+const POST_MINS = 30;
+const TOTAL     = 1440;
+
+// ─ Meal annotation plugin（一度だけ登録）─
+let _lastSorted = [];
+const mealAnnotationPlugin = {
+  id: 'mealLines',
+  afterDraw(chart) {
+    const {ctx, chartArea, scales:{x}} = chart;
+    if (!x || !chartArea) return;
+    const {top, bottom, left, right} = chartArea;
+    ctx.save();
+    _lastSorted.forEach((m, idx) => {
+      const [h,mn] = m.time.split(':').map(Number);
+      const tMin = h*60+mn;
+      const xPos = x.getPixelForValue(tMin);
+      if (xPos < left || xPos > right) return;
+      const col = {high:'#E85555',mid:'#F5A623',low:'#34C472',safe:'#9B7FD4'}[m.type]||'#999';
+      ctx.beginPath();
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([3,3]);
+      ctx.moveTo(xPos, top);
+      ctx.lineTo(xPos, bottom);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const label = (m.name||m.type).slice(0,5);
+      ctx.font = '9px sans-serif';
+      ctx.fillStyle = col;
+      ctx.textAlign = 'center';
+      const yOff = idx%2===0 ? top+10 : top+22;
+      ctx.fillText(label, xPos, yOff);
+      ctx.font = '8px sans-serif';
+      ctx.fillStyle = 'rgba(100,120,140,0.8)';
+      ctx.fillText(m.time, xPos, yOff+10);
+    });
+    ctx.restore();
+  }
+};
+Chart.register(mealAnnotationPlugin);
+
+// pH drop profile per type
+// minPh: 食事中の最低pH
+// dropMins: そこまで下がる時間
+// recoverMins: 5.5まで回復する時間（食事終了後から）
+const PROFILES = {
+  high: { minPh: 4.3, dropMins: 4,  recoverPerMin: 0.065 },
+  mid:  { minPh: 5.0, dropMins: 5,  recoverPerMin: 0.055 },
+  low:  { minPh: 6.3, dropMins: 6,  recoverPerMin: 0.08  },
+  safe: { minPh: 6.7, dropMins: 8,  recoverPerMin: 0.15  },
+};
+
+// Food presets — stayDur = 口腔内停滞時間（分）
+// ※ブラッシングなしの場合は計算時に +10分 加算される
+const FOODS = [
+  // ── 食事 ──
+  { name:'朝食（和食）',          type:'mid',  eatDur:20, stayDur:8  },
+  { name:'朝食（洋食）',          type:'mid',  eatDur:20, stayDur:8  },
+  { name:'昼食',                  type:'mid',  eatDur:25, stayDur:8  },
+  { name:'夕食',                  type:'mid',  eatDur:30, stayDur:8  },
+  { name:'ご飯・パン・麺類',      type:'mid',  eatDur:20, stayDur:8  },
+  // ── お菓子・甘いもの ──
+  { name:'キャラメル',            type:'high', eatDur:2,  stayDur:90 },
+  { name:'アメ・キャンディ',      type:'high', eatDur:5,  stayDur:45 },
+  { name:'ガム（砂糖入り）',      type:'high', eatDur:5,  stayDur:40 },
+  { name:'クッキー・ビスケット',  type:'high', eatDur:10, stayDur:30 },
+  { name:'チョコレート',          type:'high', eatDur:8,  stayDur:40 },
+  { name:'ケーキ・スイーツ',      type:'high', eatDur:15, stayDur:25 },
+  // ── 飲み物 ──
+  { name:'コーラ・清涼飲料',      type:'high', eatDur:10, stayDur:8  },
+  { name:'スポーツ飲料',          type:'high', eatDur:10, stayDur:8  },
+  { name:'コーヒー（砂糖入り）',  type:'mid',  eatDur:10, stayDur:8  },
+  { name:'フルーツ',              type:'mid',  eatDur:15, stayDur:10 },
+  { name:'牛乳',                  type:'low',  eatDur:10, stayDur:3  },
+  { name:'水・お茶',              type:'low',  eatDur:5,  stayDur:2  },
+  // ── プロテイン・健康食品 ──
+  { name:'プロテイン（無糖）',    type:'low',  eatDur:5,  stayDur:5  },
+  { name:'プロテイン（甘味料入）',type:'mid',  eatDur:5,  stayDur:8  },
+  { name:'健康食品（錠剤・粉末）',type:'low',  eatDur:3,  stayDur:3  },
+  { name:'サプリメント（錠剤）',  type:'low',  eatDur:2,  stayDur:2  },
+  { name:'グミサプリ',            type:'high', eatDur:5,  stayDur:20 },
+  // ── 安全 ──
+  { name:'キシリトールガム',      type:'safe', eatDur:10, stayDur:10 },
+];
+
+let meals     = [];
+let brushings = [];
+let chartInst = null;
+let isDryMouth = false;
+
+// ── Dry Mouth ──
+function setDryMouth(dry) {
+  isDryMouth = dry;
+  document.getElementById('btnNormal').className = 'drycheck-btn' + (!dry ? ' selected-normal' : '');
+  document.getElementById('btnDry').className    = 'drycheck-btn' + (dry  ? ' selected-dry'    : '');
+  document.getElementById('dryWarning').style.display = dry ? 'block' : 'none';
+  renderMeals(); // 脱灰時間表示を更新
+}
+
+// ── Food chips ──
+const chipsEl = document.getElementById('foodChips');
+const FOOD_CATEGORIES = [
+  { label:'🍽️ 食事',     keys:['朝食（和食）','朝食（洋食）','昼食','夕食','ご飯・パン・麺類'] },
+  { label:'🍬 お菓子',   keys:['キャラメル','アメ・キャンディ','ガム（砂糖入り）','クッキー・ビスケット','チョコレート','ケーキ・スイーツ'] },
+  { label:'🥤 飲み物',   keys:['コーラ・清涼飲料','スポーツ飲料','コーヒー（砂糖入り）','フルーツ','牛乳','水・お茶'] },
+  { label:'💊 サプリ等', keys:['プロテイン（無糖）','プロテイン（甘味料入）','健康食品（錠剤・粉末）','サプリメント（錠剤）','グミサプリ'] },
+  { label:'🟣 安全',     keys:['キシリトールガム'] },
+];
+FOOD_CATEGORIES.forEach(cat => {
+  const lbl = document.createElement('span');
+  lbl.style.cssText = 'font-size:.62rem;color:var(--text-muted);font-weight:700;width:100%;display:block;margin-top:6px;margin-bottom:2px;';
+  lbl.textContent = cat.label;
+  chipsEl.appendChild(lbl);
+  cat.keys.forEach(key => {
+    const f = FOODS.find(f => f.name === key);
+    if (!f) return;
+    const c = document.createElement('div');
+    c.className = 'food-chip' + (f.type==='safe'?' safe':'');
+    c.textContent = f.name;
+    c.onclick = () => addMeal(f.name, f.type, '', f.eatDur, f.stayDur);
+    chipsEl.appendChild(c);
+  });
+});
+
+// ── Meal ──
+// 脱灰時間 = (食事時間 + 停滞時間 + ブラシなし10分 + POST_MINS) × 乾燥係数
+function calcDemTime(type, eatDur, stayDur, noBrush=false, dryMouth=false) {
+  if (type === 'safe' || type === 'low') return 0;
+  const base = eatDur + stayDur + (noBrush ? 10 : 0) + POST_MINS;
+  return dryMouth ? Math.round(base * 1.5) : base;
+}
+
+function addMeal(name='', type='mid', time='', eatDur=15, stayDur=5) {
+  meals.push({ id: Date.now()+Math.random(), time: time||nextTime(), name, type, eatDur, stayDur });
+  renderMeals();
+}
+
+function nextTime() {
+  const used = meals.map(m=>m.time).sort();
+  for (const t of ['07:30','10:00','12:30','15:00','19:00','21:00','22:30'])
+    if (!used.includes(t)) return t;
+  return '12:00';
+}
+
+function renderMeals() {
+  const list = document.getElementById('mealList');
+  list.innerHTML = '';
+  const noBrush = brushings.length === 0;
+  meals.forEach(m => {
+    const dem    = calcDemTime(m.type, m.eatDur, m.stayDur, noBrush, isDryMouth);
+    const isSafe = m.type === 'safe' || m.type === 'low';
+    const row    = document.createElement('div');
+    row.className = 'meal-row' + (m.type==='safe'?' safe-type':'');
+    row.dataset.id = m.id;
+
+    const opts = ['high','mid','low','safe'].map(v =>
+      `<option value="${v}" ${m.type===v?'selected':''}>${
+        v==='high'?'🔴 砂糖（高）':v==='mid'?'🟡 砂糖（中）':v==='low'?'🟢 砂糖（低）':'🟣 糖置換・無糖'
+      }</option>`
+    ).join('');
+
+    const [th, tm] = m.time.split(':');
+    const hourOpts  = Array.from({length:24},(_,i)=>
+      `<option value="${String(i).padStart(2,'0')}" ${th===String(i).padStart(2,'0')?'selected':''}>${String(i).padStart(2,'0')}</option>`
+    ).join('');
+    const minOpts = Array.from({length:60},(_,i)=>{
+      const v=String(i).padStart(2,'0');
+      return `<option value="${v}" ${tm===v?'selected':''}>${v}</option>`;
+    }).join('');
+
+    const noBrushNote = (!isSafe && noBrush) ? `<span style="color:#E85555;font-size:.65rem;">＋10分(ブラシなし)</span>` : '';
+    const dryNote     = (!isSafe && isDryMouth) ? `<span style="color:#E85555;font-size:.65rem;">×1.5(乾燥)</span>` : '';
+
+    row.innerHTML = `
+      <div class="meal-grid">
+        <!-- 行1: 時刻 ＋ 削除ボタン -->
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div style="flex:1;">
+            <div class="sp-label">🕐 時刻</div>
+            <div class="time-sel-wrap" style="margin-top:4px;">
+              <select onchange="umTime(${m.id},'h',this.value)">${hourOpts}</select>
+              <span class="time-sel-sep">:</span>
+              <select onchange="umTime(${m.id},'m',this.value)">${minOpts}</select>
+            </div>
+          </div>
+          <button class="del-btn" onclick="removeMeal(${m.id})" style="margin-top:16px;flex-shrink:0;">✕</button>
+        </div>
+        <!-- 行2: 食品名 -->
+        <div>
+          <div class="sp-label">🍽️ 食品名</div>
+          <input type="text" placeholder="例：ご飯、キャラメル" value="${m.name}"
+            style="margin-top:4px;width:100%;"
+            onchange="um(${m.id},'name',this.value)">
+        </div>
+        <!-- 行3: 種類 -->
+        <div>
+          <div class="sp-label">📊 種類</div>
+          <select style="margin-top:4px;width:100%;"
+            onchange="um(${m.id},'type',this.value);setDefaultStay(${m.id},this.value);renderMeals()">${opts}</select>
+        </div>
+        <!-- 行4: 食事時間 ＋ 停滞時間 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div>
+            <div class="sp-label">⏱️ 食事時間（分）</div>
+            <input type="number" min="1" max="120" value="${m.eatDur}"
+              style="margin-top:4px;width:100%;"
+              onchange="um(${m.id},'eatDur',+this.value);renderMeals()">
+          </div>
+          <div>
+            <div class="sp-label">💧 停滞時間（分）</div>
+            <input type="number" min="0" max="180" value="${m.stayDur}"
+              style="margin-top:4px;width:100%;"
+              onchange="um(${m.id},'stayDur',+this.value);renderMeals()">
+          </div>
+        </div>
+        <!-- 行5: 脱灰時間バッジ -->
+        ${!isSafe ? `
+        <div style="background:${isDryMouth?'#FEF0F0':'#FFF3EE'};border:1.5px solid ${isDryMouth?'#F8BEBE':'#FFD4B8'};border-radius:10px;padding:8px 12px;">
+          <span style="font-size:.68rem;color:var(--text-muted);">脱灰時間：</span>
+          <strong style="color:var(--orange);font-size:.95rem;">${dem}分</strong>
+          <span style="font-size:.65rem;color:var(--text-muted);margin-left:4px;">
+            （食${m.eatDur}分 ＋ 停滞${m.stayDur}分${noBrush?' ＋ ブラシなし10分':''} ＋ 後30分${isDryMouth?' ×1.5':''}）
+          </span>
+          ${noBrushNote}${dryNote}
+        </div>` : `
+        <div class="dem-badge safe-badge" style="text-align:left;padding:8px 12px;">✅ 脱灰なし（安全な食品）</div>`}
+      </div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function um(id, k, v) { const m=meals.find(m=>m.id===id); if(m) m[k]=v; }
+function umTime(id, part, v) {
+  const m = meals.find(m=>m.id===id);
+  if (!m) return;
+  const [h, mn] = m.time.split(':');
+  m.time = part==='h' ? `${v}:${mn}` : `${h}:${v}`;
+}
+function removeMeal(id) { meals=meals.filter(m=>m.id!==id); renderMeals(); }
+
+// 種類変更時にstayDurのデフォルトを更新
+function setDefaultStay(id, type) {
+  const m = meals.find(m=>m.id===id);
+  if (!m) return;
+  const presets = FOODS.find(f => f.type === type);
+  const defaults = { high: presets?.stayDur||30, mid:8, low:3, safe:5 };
+  m.stayDur = defaults[type] || 5;
+}
+
+// ── Brush ──
+function addBrush(time='22:00') {
+  brushings.push({ id: Date.now()+Math.random(), time });
+  renderBrush();
+}
+function renderBrush() {
+  const list = document.getElementById('brushList');
+  list.innerHTML = '';
+  brushings.forEach(b => {
+    const [bh, bm] = b.time.split(':');
+    const hourOpts = Array.from({length:24},(_,i)=>{
+      const v=String(i).padStart(2,'0');
+      return `<option value="${v}" ${bh===v?'selected':''}>${v}</option>`;
+    }).join('');
+    const minOpts = Array.from({length:60},(_,i)=>{
+      const v=String(i).padStart(2,'0');
+      return `<option value="${v}" ${bm===v?'selected':''}>${v}</option>`;
+    }).join('');
+    const row = document.createElement('div');
+    row.className = 'brush-row';
+    row.innerHTML = `
+      <div class="time-sel-wrap">
+        <select onchange="ubTime(${b.id},'h',this.value)">${hourOpts}</select>
+        <span class="time-sel-sep">:</span>
+        <select onchange="ubTime(${b.id},'m',this.value)">${minOpts}</select>
+      </div>
+      <div style="font-size:.78rem;color:var(--orange)">🪥 ブラッシング（30分は脱灰継続）</div>
+      <button class="del-btn" onclick="removeBrush(${b.id})">✕</button>
+    `;
+    list.appendChild(row);
+  });
+  document.getElementById('brushNoneNotice').style.display = brushings.length===0?'block':'none';
+}
+function ubTime(id, part, v) {
+  const b = brushings.find(b=>b.id===id);
+  if (!b) return;
+  const [h,m] = b.time.split(':');
+  b.time = part==='h' ? `${v}:${m}` : `${h}:${v}`;
+}
+function ub(id,v) { const b=brushings.find(b=>b.id===id); if(b) b.time=v; }
+function removeBrush(id) { brushings=brushings.filter(b=>b.id!==id); renderBrush(); }
+
+// ── Demo Chart ──
+(function(){
+  const ctx = document.getElementById('demoChart').getContext('2d');
+  // Show: meal at t=0, duration 20min → demineral ends at t=50
+  // Sleep at t=60, wakeup at t=110
+  const pts = [];
+  for (let t=0; t<=130; t++) {
+    let ph = BASE_PH;
+    // Meal effect
+    if (t<=4) ph = BASE_PH-(BASE_PH-4.3)*(t/4);
+    else if (t<=20) ph = 4.3;
+    else if (t<=50) {
+      // recovery but capped at 5.5 boundary zone
+      ph = 4.3 + (BASE_PH-4.3)*Math.min(1,(t-20)/60);
+    } else {
+      ph = 4.3+(BASE_PH-4.3)*Math.min(1,(t-20)/60);
+    }
+    ph = Math.min(BASE_PH, ph);
+    // Sleep at 60 → pH freezes
+    if (t>=60 && t<=100) {
+      const phAtSleep = 4.3+(BASE_PH-4.3)*Math.min(1,(60-20)/60);
+      ph = Math.min(phAtSleep, ph);
+      if (t>60) ph = 4.3+(BASE_PH-4.3)*Math.min(1,(60-20)/60); // freeze
+    } else if (t>100) {
+      const frozenPh = 4.3+(BASE_PH-4.3)*Math.min(1,(60-20)/60);
+      ph = frozenPh+(BASE_PH-frozenPh)*Math.min(1,(t-100)/40);
+    }
+    pts.push({x:t, y:parseFloat(ph.toFixed(2))});
+  }
+  // sleep fill
+  const sleepFill = pts.map(p => (p.x>=60&&p.x<=100) ? 9 : null);
+
+  new Chart(ctx,{
+    type:'line',
+    data:{datasets:[
+      {data:pts,borderColor:'#39D0C8',borderWidth:2.5,pointRadius:0,fill:false,tension:.3,order:1},
+      {data:[{x:0,y:CRITICAL},{x:130,y:CRITICAL}],borderColor:'#F85149',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,order:2},
+      {data:pts.map(p=>Math.min(p.y,CRITICAL)),borderWidth:0,pointRadius:0,
+       fill:{target:1,below:'rgba(248,81,73,0.25)'},tension:.3,order:3},
+      {type:'bar',data:sleepFill.map((v,i)=>({x:i,y:v})),
+       backgroundColor:'rgba(88,166,255,0.1)',borderColor:'rgba(88,166,255,0)',
+       barThickness:1.5,order:4},
+    ]},
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      animation:false,
+      plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{
+        x:{type:'linear',min:0,max:130,
+          ticks:{color:'#7A8FA6',font:{size:10},callback:v=>v+'分'},
+          grid:{color:'#F0F4FA'}},
+        y:{min:3.8,max:7.4,
+          ticks:{color:'#7A8FA6',font:{size:10},callback:v=>'pH '+v.toFixed(1)},
+          grid:{color:'#F0F4FA'}}
+      }
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════
+// MAIN ANALYZE
+// ═══════════════════════════════════════════════
+function analyze() {
+  if (meals.length===0) { alert('食事を1つ以上入力してください'); return; }
+
+  // ─ Sync DOM values ─
+  document.querySelectorAll('.meal-row').forEach(row=>{
+    const id = parseFloat(row.dataset.id);
+    const m  = meals.find(m=>m.id===id);
+    if (!m) return;
+    // 時刻はセレクトボックス2つから取得
+    const sels = row.querySelectorAll('.time-sel-wrap select');
+    if (sels.length >= 2) m.time = `${sels[0].value}:${sels[1].value}`;
+    // 数値入力は残りのinput
+    const ins = row.querySelectorAll('input[type=number]');
+    if (ins[0]) m.eatDur  = +ins[0].value || 15;
+    if (ins[1]) m.stayDur = +ins[1].value || 5;
+    // テキスト入力
+    const nameIn = row.querySelector('input[type=text]');
+    if (nameIn) m.name = nameIn.value;
+    // 種類セレクト（.time-sel-wrap以外の最初のselect）
+    const allSels = row.querySelectorAll('select');
+    // allSels[0],[1]は時刻セレクト、allSels[2]が種類
+    if (allSels[2]) m.type = allSels[2].value;
+  });
+  // ブラッシングの時刻もセレクトボックスから取得
+  document.querySelectorAll('.brush-row').forEach((row, i) => {
+    if (!brushings[i]) return;
+    const sels = row.querySelectorAll('select');
+    if (sels.length >= 2) brushings[i].time = `${sels[0].value}:${sels[1].value}`;
+  });
+
+  const sleepStartStr = `${document.getElementById('sleepStartH').value}:${document.getElementById('sleepStartM').value}`;
+  const sleepEndStr   = `${document.getElementById('sleepEndH').value}:${document.getElementById('sleepEndM').value}`;
+  const [ssh,ssm] = sleepStartStr.split(':').map(Number);
+  const [seh,sem] = sleepEndStr.split(':').map(Number);
+  const sleepStartMin = ssh*60+ssm;
+  const sleepEndMin   = seh*60+sem;
+
+  // sleeping(t): true if minute t is within sleep
+  function sleeping(t) {
+    const tt = ((t%1440)+1440)%1440;
+    return sleepStartMin<=sleepEndMin
+      ? tt>=sleepStartMin && tt<sleepEndMin
+      : tt>=sleepStartMin || tt<sleepEndMin;
+  }
+
+  // ─ Brush minutes (sorted) ─
+  const brushMins = brushings
+    .map(b=>{ const[h,m]=b.time.split(':').map(Number); return h*60+m; })
+    .sort((a,b)=>a-b);
+
+  // ─ Build base pH curve (no sleep effect yet) ─
+  const phRaw = new Float64Array(TOTAL).fill(BASE_PH);
+
+  const sorted = [...meals].sort((a,b)=>a.time.localeCompare(b.time));
+
+  sorted.forEach(m => {
+    const [h,mn] = m.time.split(':').map(Number);
+    const mealStart = h*60+mn;
+    const prof      = PROFILES[m.type] || PROFILES.mid;
+
+    if (m.type === 'safe') {
+      // safe: very shallow dip, never below 5.5
+      for (let t=mealStart; t<mealStart+m.eatDur+20 && t<TOTAL; t++) {
+        const el = t - mealStart;
+        let ph = BASE_PH - (BASE_PH-prof.minPh) * Math.min(1, el/Math.max(1,m.eatDur));
+        if (el > m.eatDur) ph = prof.minPh + (BASE_PH-prof.minPh)*Math.min(1,(el-m.eatDur)/15);
+        ph = Math.max(prof.minPh, Math.min(BASE_PH, ph));
+        phRaw[t] = Math.min(phRaw[t], ph);
+      }
+      return;
+    }
+    if (m.type === 'low') return; // 牛乳・水は脱灰なし
+
+    // ── ブラッシングなしの場合は停滞時間に +10分 ──
+    const noBrush = brushMins.length === 0;
+    const dryMult = isDryMouth ? 1.5 : 1.0;
+    const baseStay = Math.round((m.stayDur + (noBrush ? 10 : 0)) * dryMult);
+
+    // ── ブラッシング → 停滞時間即ゼロ（Phase3はブラッシング時刻から開始）──
+    let effectiveStay = baseStay;
+    let brushCutTime  = null;
+    for (const bm of brushMins) {
+      const offset = bm - mealStart;
+      // 食事終了後〜停滞終了前のブラッシングで停滞打ち切り
+      if (offset > m.eatDur && offset < m.eatDur + baseStay) {
+        effectiveStay = offset - m.eatDur; // ブラッシングまでの停滞時間
+        brushCutTime  = bm;                // ここからPhase3開始
+        break;
+      }
+      // 食事中のブラッシングは停滞ゼロ（食事終了時点からPhase3）
+      if (offset > 0 && offset <= m.eatDur) {
+        effectiveStay = 0;
+        brushCutTime  = mealStart + m.eatDur;
+        break;
+      }
+    }
+
+    // 3フェーズ：
+    //  Phase1: [mealStart, eatEnd)      → pH急落
+    //  Phase2: [eatEnd, stayEnd)        → 停滞（低pH維持）
+    //  Phase3: [stayEnd, stayEnd+30分)  → 糖消失後30分、5.5以下で緩やかに回復
+    const eatEnd  = mealStart + m.eatDur;
+    // ブラッシングで停滞カットされた場合はbrushCutTimeがstayEnd
+    const stayEnd = brushCutTime !== null
+      ? brushCutTime
+      : eatEnd + effectiveStay;
+    const demEnd  = stayEnd + POST_MINS;
+
+    for (let t = mealStart; t < TOTAL; t++) {
+      const el = t - mealStart;
+      if (el > demEnd - mealStart + 120) break; // 十分回復したら打ち切り
+
+      let ph;
+
+      if (t < eatEnd) {
+        // Phase1: 急落
+        const prog = (t - mealStart) / Math.max(1, m.eatDur);
+        ph = BASE_PH - (BASE_PH - prof.minPh) * Math.min(1, prog * 2.5);
+      } else if (t < stayEnd) {
+        // Phase2: 停滞 — minPh付近を維持（唾液が少し作用して微増だが5.5以下）
+        const stallProg = (t - eatEnd) / Math.max(1, effectiveStay);
+        ph = prof.minPh + (Math.min(CRITICAL, prof.minPh + 0.3) - prof.minPh) * stallProg;
+      } else if (t < demEnd) {
+        // Phase3: 糖なくなった後30分 — 5.5以下で緩やかに回復
+        const postProg = (t - stayEnd) / POST_MINS;
+        const phAtStayEnd = prof.minPh + (Math.min(CRITICAL, prof.minPh + 0.3) - prof.minPh);
+        ph = phAtStayEnd + (CRITICAL - 0.05 - phAtStayEnd) * Math.min(1, postProg);
+      } else {
+        // Recovery: 5.5超えて7.0へ
+        const recEl = t - demEnd;
+        ph = CRITICAL + (BASE_PH - CRITICAL) * Math.min(1, recEl * prof.recoverPerMin);
+      }
+
+      ph = Math.max(prof.minPh, Math.min(BASE_PH, ph));
+      phRaw[t] = Math.min(phRaw[t], ph);
+    }
+  });
+
+  // ─ Apply sleep: freeze pH at sleepStart, hold until sleepEnd ─
+  const phFinal = new Float64Array(phRaw);
+
+  let sleepFreezeVal = null;
+  for (let t=0; t<TOTAL; t++) {
+    if (t === sleepStartMin) {
+      sleepFreezeVal = phFinal[t];
+    }
+    if (sleeping(t)) {
+      phFinal[t] = sleepFreezeVal !== null ? sleepFreezeVal : phFinal[t];
+    } else {
+      // waking up: continue from frozen value
+      if (sleepFreezeVal !== null && t === sleepEndMin) {
+        // Keep the frozen value as the starting point post-sleep
+        phFinal[t] = Math.min(phFinal[t], sleepFreezeVal);
+        sleepFreezeVal = null;
+      }
+    }
+  }
+
+  // Handle overnight sleep (freeze wraps midnight)
+  if (sleepStartMin > sleepEndMin) {
+    // Freeze from sleepStart to 1440
+    const freezeVal = phFinal[sleepStartMin];
+    for (let t=sleepStartMin; t<TOTAL; t++) phFinal[t] = freezeVal;
+    // Continue freeze from 0 to sleepEnd
+    for (let t=0; t<sleepEndMin; t++) phFinal[t] = freezeVal;
+    // wakeup starts at sleepEnd with freezeVal or lower
+    phFinal[sleepEndMin] = Math.min(phFinal[sleepEndMin], freezeVal);
+  }
+
+  // Light smooth (only outside sleep zone to preserve freeze)
+  const smoothed = new Float64Array(phFinal);
+  for (let i=2; i<TOTAL-2; i++) {
+    if (!sleeping(i) && !sleeping(i-1) && !sleeping(i+1)) {
+      smoothed[i] = (phFinal[i-2]+phFinal[i-1]*2+phFinal[i]*2+phFinal[i+1]*2+phFinal[i+2]) / 9;
+    }
+  }
+
+  // ─ Statistics ─
+  let demMinsAwake=0, demMinsSleep=0, remMins=0;
+  const phSleepFreeze = smoothed[sleepStartMin] || BASE_PH;
+
+  for (let t=0; t<TOTAL; t++) {
+    const isSl = sleeping(t);
+    const ph   = smoothed[t];
+    if (ph < CRITICAL) {
+      if (isSl) demMinsSleep++;
+      else      demMinsAwake++;
+    } else {
+      if (!isSl) remMins++;
+    }
+  }
+  const totalDem = demMinsAwake + demMinsSleep;
+  const minPh    = Math.min(...Array.from(smoothed));
+  const balanced = remMins >= totalDem;
+  const sugarCount = sorted.filter(m=>m.type==='high'||m.type==='mid').length;
+  const safeCount  = sorted.filter(m=>m.type==='safe').length;
+  const sleepDemAlert = phSleepFreeze < CRITICAL;
+
+  // ── リスクスコア：再石灰化 vs 脱灰の比率を主軸に ──
+  // 再石灰化時間 / (再石灰化時間 + 脱灰時間) の割合でスコアを決める
+  // 割合が高い（再石灰化が多い）→ 低リスク
+  // 割合が低い（脱灰が多い）→ 高リスク
+  const totalActive = remMins + totalDem;
+  const remRatio = totalActive > 0 ? remMins / totalActive : 1; // 0〜1
+
+  // 基本スコア（0=低リスク, 100=高リスク）
+  // remRatio=1.0 → score=0, remRatio=0.0 → score=100
+  let riskScore = Math.round((1 - remRatio) * 100);
+
+  // 睡眠中脱灰の割合が高い場合は追加ペナルティ
+  // 睡眠中脱灰が全脱灰の30%超 → 重大
+  const sleepDemRatio = totalDem > 0 ? demMinsSleep / totalDem : 0;
+  if (sleepDemRatio > 0.5)      riskScore = Math.min(100, riskScore + 20);
+  else if (sleepDemRatio > 0.3) riskScore = Math.min(100, riskScore + 10);
+
+  // ブラッシングなしはペナルティ
+  if (!brushings.length) riskScore = Math.min(100, riskScore + 10);
+
+  // 低リスク: remRatio > 0.6 かつ 睡眠中脱灰なし
+  // 中リスク: remRatio 0.4〜0.6 または 睡眠中脱灰あり
+  // 高リスク: remRatio < 0.4 または 睡眠中脱灰が多い
+  const riskLevel = riskScore < 35 ? 'low' : riskScore < 60 ? 'mid' : 'high';
+
+  // ─ Chart data ─
+  const labels=[], data=[], sleepBand=[];
+  for (let i=0; i<TOTAL; i++) {
+    const h = String(Math.floor(i/60)).padStart(2,'0');
+    const m = String(i%60).padStart(2,'0');
+    labels.push(`${h}:${m}`);
+    data.push(parseFloat(smoothed[i].toFixed(2)));
+    sleepBand.push(sleeping(i) ? 7.4 : null);
+  }
+
+  const brushPts = [];
+  brushMins.forEach(bm => {
+    for (let ph=3.8; ph<=7.5; ph+=0.15)
+      brushPts.push({x:bm, y:parseFloat(ph.toFixed(2))});
+  });
+
+  // ─ グローバルにsortedを渡してプラグインで使えるようにする ─
+  _lastSorted = sorted;
+
+  // ─ Show result ─
+  document.getElementById('chartSection').style.display = 'block';
+  document.getElementById('step1').className = 'step done';
+  document.getElementById('step2').className = 'step active';
+  setTimeout(()=>document.getElementById('chartSection').scrollIntoView({behavior:'smooth',block:'start'}),100);
+
+  if (chartInst) chartInst.destroy();
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  const dangerGrad = ctx.createLinearGradient(0,0,0,320);
+  dangerGrad.addColorStop(0,'rgba(248,81,73,0.35)');
+  dangerGrad.addColorStop(1,'rgba(248,81,73,0.03)');
+
+  chartInst = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        {type:'line',data,borderColor:'#3BBFB8',borderWidth:2.5,pointRadius:0,fill:false,tension:.3,order:1},
+        {type:'line',data:new Array(TOTAL).fill(CRITICAL),borderColor:'#E85555',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false,order:2},
+        {type:'line',data:data.map(v=>Math.min(v,CRITICAL)),borderWidth:0,pointRadius:0,
+         fill:{target:1,below:dangerGrad},tension:.3,order:3},
+        {type:'line',data:sleepBand,borderWidth:0,pointRadius:0,
+         backgroundColor:'rgba(74,144,217,0.08)',fill:'origin',tension:0,order:4,spanGaps:false},
+        {type:'scatter',data:brushPts,backgroundColor:'rgba(255,140,66,0.5)',pointRadius:1.5,order:0},
+      ]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      animation:{duration:1100,easing:'easeInOutQuart'},
+      plugins:{
+        legend:{display:false},
+        tooltip:{mode:'index',intersect:false,backgroundColor:'#fff',borderColor:'#E2E8F4',borderWidth:1,
+          titleColor:'#2D3A4A',bodyColor:'#2D3A4A',
+          filter:item=>item.datasetIndex===0,
+          callbacks:{label:c=>`pH: ${c.parsed.y.toFixed(2)}`,title:c=>c[0].label}
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#7A8FA6',font:{size:9},maxTicksLimit:8,
+            callback:(_,i)=>i%120===0?String(Math.floor(i/60)).padStart(2,'0')+':00':''},
+           grid:{color:'#F0F4FA'}},
+        y:{min:3.8,max:7.4,
+           ticks:{color:'#7A8FA6',font:{size:10},callback:v=>'pH '+v.toFixed(1)},
+           grid:{color:'#F0F4FA'}}
+      }
+    }
+  });
+
+  // ─ Stats ─
+  const rc={low:'var(--green)',mid:'var(--yellow)',high:'var(--red)'};
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-box">
+      <div class="stat-label">脱灰時間<br>（覚醒中）</div>
+      <div class="stat-val" style="color:${demMinsAwake>60?'var(--red)':demMinsAwake>20?'var(--yellow)':'var(--green)'}">${demMinsAwake}</div>
+      <div class="stat-unit">分</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">脱灰時間<br>（睡眠中）</div>
+      <div class="stat-val" style="color:${demMinsSleep>0?'var(--red)':'var(--green)'}">${demMinsSleep}</div>
+      <div class="stat-unit">分</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">再石灰化<br>（唾液回復）</div>
+      <div class="stat-val" style="color:${balanced?'var(--teal)':'var(--red)'}">${remMins}</div>
+      <div class="stat-unit">分</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">就寝時pH</div>
+      <div class="stat-val" style="color:${phSleepFreeze<CRITICAL?'var(--red)':phSleepFreeze<6.0?'var(--yellow)':'var(--green)'}">${phSleepFreeze.toFixed(2)}</div>
+      <div class="stat-unit">${phSleepFreeze<CRITICAL?'⚠ 脱灰継続':'✓ 安全域'}</div>
+    </div>
+  `;
+
+  // Balance
+  const mx = Math.max(totalDem, remMins, 1);
+  const demPct = Math.min(100,(totalDem/mx)*100);
+  const remPct = Math.min(100,(remMins/mx)*100);
+  document.getElementById('balanceSection').innerHTML=`
+    <div class="balance-title">SALIVARY BALANCE — 再石灰化時間 vs 脱灰時間</div>
+    <div class="balance-row">
+      <div class="balance-lbl">🦷 脱灰</div>
+      <div class="balance-track"><div class="balance-fill" style="width:${demPct}%;background:var(--red)"></div></div>
+      <div class="balance-num" style="color:var(--red)">${totalDem}分</div>
+    </div>
+    <div class="balance-row">
+      <div class="balance-lbl">💧 再石灰化</div>
+      <div class="balance-track"><div class="balance-fill" style="width:${remPct}%;background:var(--teal)"></div></div>
+      <div class="balance-num" style="color:var(--teal)">${remMins}分</div>
+    </div>
+    <div class="balance-verdict ${balanced?'verdict-ok':'verdict-ng'}">
+      ${balanced
+        ? `✅ 再石灰化時間（${remMins}分）≧ 脱灰時間（${totalDem}分）<br>唾液によるpH回復が脱灰を上回っています。`
+        : `❌ 脱灰時間（${totalDem}分）＞ 再石灰化時間（${remMins}分）<br>回復が追いつかず、<strong>虫歯が進行しやすい状態</strong>です。`
+      }
+    </div>
+  `;
+
+  // Gauge
+  setTimeout(()=>document.getElementById('gaugeNeedle').style.left=Math.min(95,riskScore)+'%',200);
+  const rLabels={low:'低リスク 🟢',mid:'中リスク 🟡',high:'高リスク 🔴'};
+
+  // リスク説明：再石灰化 vs 脱灰の数値を明示
+  const remPct2 = totalActive>0 ? Math.round(remRatio*100) : 100;
+  const demPct2 = 100 - remPct2;
+  const rDesc={
+    low: `再石灰化時間（${remMins}分）が脱灰時間（${totalDem}分）を上回っており、唾液による歯の修復が十分に機能しています。この生活習慣を続けましょう。`,
+    mid: `脱灰時間（${totalDem}分）に対して再石灰化時間（${remMins}分）がやや不足しています。間食の頻度や就寝前の口腔ケアを見直すと改善が期待できます。`,
+    high:`脱灰時間（${totalDem}分）が再石灰化時間（${remMins}分）を大きく上回っており、むし歯が進行しやすい状態です。食習慣と口腔ケアの早急な改善が必要です。`
+  };
+  document.getElementById('riskBadge').innerHTML=`
+    <span class="risk-badge risk-${riskLevel}">${rLabels[riskLevel]}</span>
+    <div style="margin-top:10px;background:var(--surface2);border-radius:10px;padding:10px 14px;border:1.5px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:.7rem;color:var(--text-muted);font-weight:700;width:80px;">再石灰化</span>
+        <div style="flex:1;height:10px;border-radius:100px;background:var(--border);overflow:hidden;">
+          <div style="height:100%;width:${remPct2}%;background:var(--teal);border-radius:100px;transition:width 1s;"></div>
+        </div>
+        <span style="font-size:.75rem;font-weight:700;color:var(--teal);width:36px;text-align:right;">${remPct2}%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:.7rem;color:var(--text-muted);font-weight:700;width:80px;">脱灰</span>
+        <div style="flex:1;height:10px;border-radius:100px;background:var(--border);overflow:hidden;">
+          <div style="height:100%;width:${demPct2}%;background:var(--red);border-radius:100px;transition:width 1s;"></div>
+        </div>
+        <span style="font-size:.75rem;font-weight:700;color:var(--red);width:36px;text-align:right;">${demPct2}%</span>
+      </div>
+    </div>
+    <div style="font-size:.78rem;color:var(--text-muted);margin-top:8px;line-height:1.7;">${rDesc[riskLevel]}</div>
+  `;
+
+  // ── アラートボックス ──
+  let alerts='';
+
+  // 【最重要】睡眠中脱灰の詳細警告
+  if (demMinsSleep > 0) {
+    const sleepDemPct = totalDem > 0 ? Math.round(demMinsSleep/totalDem*100) : 0;
+
+    // 就寝前2時間以内の食事を特定
+    const mealsBefore2h = sorted.filter(m=>{
+      const[h,mn]=m.time.split(':').map(Number);
+      const mt=h*60+mn;
+      const diff = sleepStartMin - mt;
+      return (m.type==='high'||m.type==='mid') && diff>0 && diff<=120;
+    });
+    const mealsBeforeNames = mealsBefore2h.map(m=>m.name||m.type);
+
+    // 睡眠中脱灰の重篤度
+    const sleepSeverity = sleepDemPct >= 50 ? 'red' : sleepDemPct >= 20 ? 'orange' : 'blue';
+    const sleepSeverityClass = sleepSeverity==='red'?'alert-red':sleepSeverity==='orange'?'alert-orange':'alert-blue';
+
+    alerts += `<div class="alert-box ${sleepSeverityClass}">
+      😴 <strong>睡眠中の脱灰：${demMinsSleep}分（全脱灰の${sleepDemPct}%）</strong><br>
+      就寝時のpH ${phSleepFreeze.toFixed(2)} が起床（${sleepEndStr}）まで固定されます。
+      睡眠中は唾液がほぼ分泌されないため、<strong>一切回復できません</strong>。
+      ${sleepDemPct>=50 ? '脱灰時間の半分以上が睡眠中に発生しており、非常に危険な状態です。' : ''}
+      ${mealsBefore2h.length ? `<br>⚠️ 就寝2時間以内の「${mealsBeforeNames.join('・')}」がpH低下の原因と考えられます。就寝前の飲食は控え、ブラッシング後に食べないようにしましょう。` : ''}
+    </div>`;
+  }
+
+  // 覚醒中も脱灰が多い
+  if (demMinsAwake > remMins) {
+    alerts+=`<div class="alert-box alert-orange" style="margin-top:8px;">
+      ⚠️ <strong>覚醒中の脱灰（${demMinsAwake}分）＞ 再石灰化（${remMins}分）</strong><br>
+      起きている間も脱灰が回復を上回っています。食事・間食の回数を減らし、
+      食事と食事の間に十分な時間（2時間以上）をあけることで再石灰化が促されます。
+    </div>`;
+  }
+
+  // ブラッシングなし
+  if (!brushings.length) {
+    alerts+=`<div class="alert-box alert-orange" style="margin-top:8px;">
+      🪥 <strong>ブラッシングが記録されていません</strong><br>
+      就寝前のブラッシングにより口腔内の糖・食物残渣を除去すると、
+      就寝時pHが改善され、睡眠中の脱灰を大幅に減らすことができます。
+    </div>`;
+  }
+
+  // ドライマウス
+  if (isDryMouth) {
+    alerts+=`<div class="alert-box alert-red" style="margin-top:8px;">
+      💧 <strong>口腔乾燥・口呼吸による緩衝能低下</strong>（脱灰1.5倍換算）<br>
+      唾液の分泌量が少ないと緩衝能（pHを中性に戻す力）が弱まり、
+      酸の中和に時間がかかります。水分補給・鼻呼吸の意識・就寝時の加湿を心がけましょう。
+      口腔乾燥が続く場合は歯科・耳鼻科への相談をお勧めします。
+    </div>`;
+  }
+
+  // 全て良好
+  if (!alerts) {
+    alerts=`<div class="alert-box alert-blue">
+      ✅ 特に気になる点はありません。この生活習慣を維持して、定期健診を続けましょう。
+    </div>`;
+  }
+
+  document.getElementById('alertBoxes').innerHTML = alerts;
+
+  // Timeline
+  const bar = document.getElementById('tlBar');
+  bar.innerHTML='';
+  // Sleep
+  const sl = document.createElement('div');
+  sl.className='tl-sleep';
+  const slPct = (sleepStartMin/1440)*100;
+  const slLen = sleepStartMin<=sleepEndMin
+    ? (sleepEndMin-sleepStartMin)/1440*100
+    : (1440-sleepStartMin+sleepEndMin)/1440*100;
+  sl.style.left=slPct+'%'; sl.style.width=slLen+'%';
+  bar.appendChild(sl);
+  // Meals
+  const cols={high:'#F85149',mid:'#D29922',low:'#3FB950',safe:'#BC8CFF'};
+  sorted.forEach(m=>{
+    const[h,mn]=m.time.split(':').map(Number);
+    const pct=(h*60+mn)/1440*100;
+    const totalDemMin = calcDemTime(m.type, m.eatDur, m.stayDur, brushMins.length===0, isDryMouth);
+    const w=Math.max(0.8, totalDemMin/1440*100);
+    const seg=document.createElement('div');
+    seg.className='tl-seg';
+    seg.style.left=pct+'%'; seg.style.width=w+'%';
+    seg.style.background=cols[m.type]; seg.style.opacity='.85';
+    const noBrushLabel = brushMins.length===0 ? '+ブラシなし10分' : '';
+    const dryLabel = isDryMouth ? '×1.5(乾燥)' : '';
+    seg.title=`${m.time} ${m.name||m.type}（食${m.eatDur}分+停滞${m.stayDur}分${noBrushLabel}+後30分${dryLabel}=${totalDemMin}分脱灰）`;
+    bar.appendChild(seg);
+  });
+  // Brush
+  brushMins.forEach(bm=>{
+    const seg=document.createElement('div');
+    seg.className='tl-seg';
+    seg.style.left=(bm/1440*100)+'%'; seg.style.width='0.35%';
+    seg.style.background='var(--orange)'; seg.style.opacity='1';
+    seg.title=`${String(Math.floor(bm/60)).padStart(2,'0')}:${String(bm%60).padStart(2,'0')} ブラッシング`;
+    bar.appendChild(seg);
+  });
+
+}
+
+// ─ Init sleep selects ─
+(function(){
+  function fillSel(id, count, defaultVal) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    for (let i = 0; i < count; i++) {
+      const v = String(i).padStart(2,'0');
+      const opt = document.createElement('option');
+      opt.value = v; opt.textContent = v;
+      if (v === defaultVal) opt.selected = true;
+      sel.appendChild(opt);
+    }
+  }
+  fillSel('sleepStartH', 24, '23');
+  fillSel('sleepStartM', 60, '00');
+  fillSel('sleepEndH',   24, '07');
+  fillSel('sleepEndM',   60, '00');
+})();
+
+// ─ 印刷 ─
+function printChart() {
+  // 印刷日時をセット
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${['日','月','火','水','木','金','土'][now.getDay()]}）`;
+  const el = document.getElementById('printDate');
+  if (el) el.textContent = `作成日：${dateStr}`;
+
+  // Chart.jsのcanvasを高解像度で再描画してから印刷
+  if (chartInst) {
+    chartInst.resize();
+    chartInst.update('none');
+  }
+  window.print();
+}
+
+addMeal('昼食','mid','12:30',25,8);
+addMeal('キャラメル','high','15:00',2,60);
+addMeal('夕食','mid','19:00',30,8);
+addMeal('アメ・キャンディ','high','22:00',5,30);
+addBrush('08:10');
+addBrush('23:00');
+renderBrush();
+</script>
+</body>
+</html>
